@@ -22,6 +22,7 @@ use Cake\Console\Exception\MissingOptionException;
 use Cake\Console\Exception\StopException;
 use Cake\Core\ConsoleApplicationInterface;
 use Cake\Core\ContainerApplicationInterface;
+use Cake\Core\EventAwareApplicationInterface;
 use Cake\Core\PluginApplicationInterface;
 use Cake\Event\EventDispatcherInterface;
 use Cake\Event\EventDispatcherTrait;
@@ -320,8 +321,10 @@ class CommandRunner implements EventDispatcherInterface
     {
         try {
             $eventManager = $this->getEventManager();
-            $eventManager = $this->app->pluginEvents($eventManager);
-            $eventManager = $this->app->events($eventManager);
+            if ($this->app instanceof EventAwareApplicationInterface) {
+                $eventManager = $this->app->pluginEvents($eventManager);
+                $eventManager = $this->app->events($eventManager);
+            }
             $this->setEventManager($eventManager);
             if ($command instanceof EventDispatcherInterface) {
                 $command->setEventManager($this->getEventManager());

@@ -23,6 +23,7 @@ use Cake\Core\ConsoleApplicationInterface;
 use Cake\Core\Container;
 use Cake\Core\ContainerApplicationInterface;
 use Cake\Core\ContainerInterface;
+use Cake\Core\EventAwareApplicationInterface;
 use Cake\Core\Exception\MissingPluginException;
 use Cake\Core\HttpApplicationInterface;
 use Cake\Core\Plugin;
@@ -61,7 +62,8 @@ abstract class BaseApplication implements
     EventDispatcherInterface,
     HttpApplicationInterface,
     PluginApplicationInterface,
-    RoutingApplicationInterface
+    RoutingApplicationInterface,
+    EventAwareApplicationInterface
 {
     /**
      * @use \Cake\Event\EventDispatcherTrait<TSubject>
@@ -83,7 +85,7 @@ abstract class BaseApplication implements
     /**
      * Controller factory
      *
-     * @var \Cake\Http\ControllerFactoryInterface|null
+     * @var ControllerFactoryInterface|null
      */
     protected ?ControllerFactoryInterface $controllerFactory = null;
 
@@ -99,7 +101,7 @@ abstract class BaseApplication implements
      *
      * @param string $configDir The directory the bootstrap configuration is held in.
      * @param \Cake\Event\EventManagerInterface|null $eventManager Application event manager instance.
-     * @param \Cake\Http\ControllerFactoryInterface|null $controllerFactory Controller factory.
+     * @param ControllerFactoryInterface|null $controllerFactory Controller factory.
      */
     public function __construct(
         string $configDir,
@@ -114,8 +116,8 @@ abstract class BaseApplication implements
     }
 
     /**
-     * @param \Cake\Http\MiddlewareQueue $middlewareQueue The middleware queue to set in your App Class
-     * @return \Cake\Http\MiddlewareQueue
+     * @param MiddlewareQueue $middlewareQueue The middleware queue to set in your App Class
+     * @return MiddlewareQueue
      */
     abstract public function middleware(MiddlewareQueue $middlewareQueue): MiddlewareQueue;
 
